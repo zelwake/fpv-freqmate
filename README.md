@@ -1,50 +1,138 @@
-# Welcome to your Expo app 👋
+# DroneFrequency 🚁
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+React Native aplikace pro snadné nastavování VTX/VRX kanálů na dronech a přijímačích.
 
-## Get started
+## ✨ Funkce
 
-1. Install dependencies
+- 📡 **Hlavní průvodce**: Výběr VTX + VRX zařízení → zadání frekvence → zobrazení nastavení (Band + Channel)
+- 🔧 **Správa zařízení**: Přidávání vlastních VTX/VRX zařízení s mapováním pásem
+- 📊 **Vizualizace spektra**: Graf frekvencí + mřížka všech kanálů
+- 🔍 **Hledání volných kanálů**: Detekce konfliktů a doporučení volných frekvencí
+- ⭐ **Oblíbené**: Rychlý přístup k často používaným konfiguracím
+- 📜 **Historie**: Automatické zaznamenávání posledních vyhledání
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## 🚀 Quick Start
 
 ```bash
-npm run reset-project
+# Instalace závislostí
+pnpm install
+
+# Spuštění development serveru
+pnpm start
+
+# Android
+pnpm android
+
+# iOS
+pnpm ios
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 📋 Požadavky
 
-## Learn more
+- Node.js 18+
+- pnpm 10+
+- Expo CLI
+- Android Studio (pro Android) nebo Xcode (pro iOS)
 
-To learn more about developing your project with Expo, look at the following resources:
+## 🏗️ Tech Stack
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- **Framework**: React Native 0.81.5 + Expo SDK 54
+- **Routing**: Expo Router 6 (file-based)
+- **Database**: SQLite + Drizzle ORM
+- **State Management**: TanStack Query v5
+- **TypeScript**: 5.9.2 (strict mode)
+- **Testing**: Jest + React Testing Library
 
-## Join the community
+## 📚 Dokumentace
 
-Join our community of developers creating universal apps.
+- [Developer Documentation](./docs/README.md) - Kompletní dokumentace pro vývojáře
+- [Manual Testing Plan](./docs/MANUAL_TESTING.md) - Test plány pro manuální testování
+- [Agents Guidelines](./AGENTS.md) - Pokyny pro AI coding agenty
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 🧪 Testing
+
+```bash
+# Spustit všechny testy
+pnpm test
+
+# Testy v watch módu
+pnpm test:watch
+
+# Lint
+pnpm lint
+```
+
+## 📖 Oficiální pásma
+
+Aplikace obsahuje 10 předpřipravených FPV pásem:
+
+- **A** - Boscam A
+- **B** - Boscam B
+- **E** - Boscam E
+- **F** - FatShark / NexWave
+- **R** - Race Band
+- **D** - Boscam D / DJI
+- **U** - U Band
+- **O** - O Band
+- **L** - Low Band
+- **H** - High Band
+
+## 🗂️ Struktura projektu
+
+```
+DroneFrequency/
+├── app/              # Expo Router screens
+├── components/       # React komponenty
+├── db/               # Databáze (schema, queries, seed)
+├── hooks/            # Custom React hooks
+├── utils/            # Utility funkce
+├── types/            # TypeScript types
+├── docs/             # Dokumentace
+└── __tests__/        # Testy
+```
+
+## 🔄 Databáze
+
+Aplikace používá SQLite s Drizzle ORM. Při prvním spuštění se automaticky:
+
+1. Vytvoří databáze `frequencies.db`
+2. Spustí migrace
+3. Naplní oficiálními FPV pásmy
+
+```bash
+# Vygenerovat novou migraci
+npx drizzle-kit generate
+
+# Zobrazit Drizzle Studio
+npx drizzle-kit studio
+```
+
+## 🎨 Screenshoty
+
+_TODO: Přidat screenshoty po dokončení UI_
+
+## 🤝 Contributing
+
+1. Fork repository
+2. Vytvořte feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit změny (`git commit -m 'feat: add amazing feature'`)
+4. Push do branch (`git push origin feature/amazing-feature`)
+5. Otevřete Pull Request
+
+## 📝 License
+
+MIT
+
+## 🙏 Acknowledgments
+
+- Expo team za skvělý framework
+- FPV komunita za data oficiálních pásem
+- Drizzle ORM team
+
+---
+
+**Status**: 🚧 Work in Progress
+
+**Verze**: 1.0.0 (MVP in development)
+
+**Poslední update**: 2026-01-25
