@@ -17,6 +17,7 @@ interface LookupResult {
   bandId: number;
   bandSign: string;
   bandName: string;
+  bandLabel?: string;
   channel: number;
   frequency: number;
   isExactMatch: boolean;
@@ -87,6 +88,7 @@ export function useFrequencyLookup() {
             bandId: result.vtx.bandId,
             bandSign: result.vtx.bandSign,
             bandName: result.vtx.bandName,
+            bandLabel: result.vtx.bandLabel,
             channel: result.vtx.channel,
             frequency: result.vtx.frequency,
             isExactMatch: result.exact,
@@ -98,6 +100,7 @@ export function useFrequencyLookup() {
             bandId: result.vrx.bandId,
             bandSign: result.vrx.bandSign,
             bandName: result.vrx.bandName,
+            bandLabel: result.vrx.bandLabel,
             channel: result.vrx.channel,
             frequency: result.vrx.frequency,
             isExactMatch: result.exact,

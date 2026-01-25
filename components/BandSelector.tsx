@@ -1,16 +1,26 @@
 import { spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useBands } from '@/hooks/useBands';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Input } from './ui/Input';
 
 interface BandSelectorProps {
   selectedBandIds: number[];
   onChange: (bandIds: number[]) => void;
+  bandLabels: Record<number, string>;
+  onLabelChange: (bandLabels: Record<number, string>) => void;
   label?: string;
   error?: string;
 }
 
-export const BandSelector = ({ selectedBandIds, onChange, label, error }: BandSelectorProps) => {
+export const BandSelector = ({
+  selectedBandIds,
+  onChange,
+  bandLabels,
+  onLabelChange,
+  label,
+  error,
+}: BandSelectorProps) => {
   const { colors } = useTheme();
   const { data: bands = [], isLoading } = useBands();
 
@@ -20,6 +30,13 @@ export const BandSelector = ({ selectedBandIds, onChange, label, error }: BandSe
     } else {
       onChange([...selectedBandIds, bandId]);
     }
+  };
+
+  const handleLabelChange = (bandId: number, value: string) => {
+    onLabelChange({
+      ...bandLabels,
+      [bandId]: value,
+    });
   };
 
   if (isLoading) {
@@ -35,39 +52,61 @@ export const BandSelector = ({ selectedBandIds, onChange, label, error }: BandSe
     <View style={styles.container}>
       {label && <Text style={[styles.label, { color: colors.text }]}>{label}</Text>}
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        {bands.map((band) => {
-          const isSelected = selectedBandIds.includes(band.id);
-          return (
+      {bands.map((band) => {
+        const isSelected = selectedBandIds.includes(band.id);
+        const frequencies = band.frequencies || [];
+        const freqRange =
+          frequencies.length > 0
+            ? `${frequencies[0]?.frequency}-${frequencies[frequencies.length - 1]?.frequency} MHz`
+            : '';
+
+        return (
+          <View key={band.id} style={styles.bandItem}>
             <TouchableOpacity
-              key={band.id}
               onPress={() => toggleBand(band.id)}
               style={[
-                styles.bandChip,
+                styles.bandRow,
                 {
-                  backgroundColor: isSelected ? colors.primary : colors.background,
+                  backgroundColor: colors.card,
                   borderColor: isSelected ? colors.primary : colors.border,
                 },
               ]}
             >
-              <Text
+              <View
                 style={[
-                  styles.bandLabel,
+                  styles.checkbox,
                   {
-                    color: isSelected ? '#FFFFFF' : colors.text,
+                    borderColor: isSelected ? colors.primary : colors.border,
+                    backgroundColor: isSelected ? colors.primary : 'transparent',
                   },
                 ]}
               >
-                {band.name}
-              </Text>
+                {isSelected && <Text style={styles.checkmark}>✓</Text>}
+              </View>
+              <View style={styles.bandInfo}>
+                <Text style={[styles.bandName, { color: colors.text }]}>
+                  {band.bandSign} - {band.name}
+                </Text>
+                {freqRange && (
+                  <Text style={[styles.freqRange, { color: colors.textSecondary }]}>
+                    {freqRange}
+                  </Text>
+                )}
+              </View>
             </TouchableOpacity>
-          );
-        })}
-      </ScrollView>
+
+            {isSelected && (
+              <View style={styles.labelInputContainer}>
+                <Input
+                  placeholder={`Label (default: ${band.bandSign})`}
+                  value={bandLabels[band.id] || ''}
+                  onChangeText={(value) => handleLabelChange(band.id, value)}
+                />
+              </View>
+            )}
+          </View>
+        );
+      })}
 
       <Text style={[styles.hint, { color: colors.textSecondary }]}>
         {selectedBandIds.length === 0
@@ -89,19 +128,44 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: spacing.sm,
   },
-  scrollContent: {
-    gap: spacing.sm,
-    paddingVertical: spacing.xs,
+  bandItem: {
+    marginBottom: spacing.sm,
   },
-  bandChip: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: 20,
+  bandRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: spacing.md,
+    borderRadius: 8,
     borderWidth: 2,
   },
-  bandLabel: {
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 4,
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: spacing.md,
+  },
+  checkmark: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  bandInfo: {
+    flex: 1,
+  },
+  bandName: {
     fontSize: 16,
     fontWeight: '600',
+    marginBottom: 2,
+  },
+  freqRange: {
+    fontSize: 12,
+  },
+  labelInputContainer: {
+    marginTop: spacing.sm,
+    marginLeft: 40,
   },
   hint: {
     fontSize: 12,

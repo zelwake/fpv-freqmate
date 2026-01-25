@@ -1,4 +1,3 @@
-import { BandLabelEditor } from '@/components/BandLabelEditor';
 import { BandSelector } from '@/components/BandSelector';
 import { Button } from '@/components/ui/Button';
 import { Dropdown } from '@/components/ui/Dropdown';
@@ -103,17 +102,10 @@ const AddDeviceScreen = () => {
             setSelectedBandIds(ids);
             if (errors.bands) setErrors({ ...errors, bands: undefined });
           }}
+          bandLabels={bandLabels}
+          onLabelChange={setBandLabels}
           error={errors.bands}
         />
-
-        {selectedBandIds.length > 0 && (
-          <BandLabelEditor
-            label="Band Labels (optional)"
-            selectedBandIds={selectedBandIds}
-            bandLabels={bandLabels}
-            onChange={setBandLabels}
-          />
-        )}
 
         <View style={styles.buttonContainer}>
           <Button onPress={() => router.back()} variant="secondary" style={styles.button}>

@@ -27,6 +27,7 @@ export interface FrequencyMatch {
   bandId: number;
   bandSign: string;
   bandName: string;
+  bandLabel?: string; // Custom label from device
   channel: number;
   frequency: number;
 }

@@ -19,6 +19,8 @@ export function SettingResult({ type, result, style }: SettingResultProps) {
   }
 
   const typeLabel = type.toUpperCase();
+  // Use bandLabel if available, otherwise use bandSign
+  const displayBand = result.bandLabel || result.bandSign;
 
   return (
     <Card style={[styles.card, { backgroundColor: colors.successLight }, style]}>
@@ -26,7 +28,7 @@ export function SettingResult({ type, result, style }: SettingResultProps) {
       <View style={styles.row}>
         <Text style={[styles.label, { color: colors.textSecondary }]}>Band:</Text>
         <Text style={[styles.value, { color: colors.text }]}>
-          {result.bandSign} ({result.bandName})
+          {displayBand} ({result.bandName})
         </Text>
       </View>
       <View style={styles.row}>
