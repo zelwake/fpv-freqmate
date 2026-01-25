@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useDatabase } from './useDatabase';
 import * as queries from '@/db/queries';
 import type { CreateDeviceData, CreateDeviceInput } from '@/types';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useDatabase } from './useDatabase';
 
 /**
  * Hook pro získání všech zařízení podle typu
@@ -10,7 +10,7 @@ export function useDevices(type?: 'VTX' | 'VRX') {
   const db = useDatabase();
 
   return useQuery({
-    queryKey: ['devices', type],
+    queryKey: ['devices', type, db],
     queryFn: () => queries.getDevicesByType(db, type),
   });
 }
@@ -22,7 +22,7 @@ export function useDevice(deviceId: number | null) {
   const db = useDatabase();
 
   return useQuery({
-    queryKey: ['device', deviceId],
+    queryKey: ['device', deviceId, db],
     queryFn: () => (deviceId ? queries.getDevice(db, deviceId) : null),
     enabled: deviceId !== null,
   });
@@ -41,9 +41,11 @@ export function useCreateDevice() {
       const allBands = await queries.getAllBands(db);
       const bands = input.bandIds.map((bandId) => {
         const band = allBands.find((b) => b.id === bandId);
+        // Use custom label if provided, otherwise use bandSign
+        const label = input.bandLabels?.[bandId] || band?.bandSign || `Band ${bandId}`;
         return {
           bandId,
-          label: band?.bandSign || `Band ${bandId}`,
+          label,
         };
       });
 
@@ -86,9 +88,11 @@ export function useUpdateDevice() {
         const allBands = await queries.getAllBands(db);
         const bands = input.bandIds.map((bandId) => {
           const band = allBands.find((b) => b.id === bandId);
+          // Use custom label if provided, otherwise use bandSign
+          const label = input.bandLabels?.[bandId] || band?.bandSign || `Band ${bandId}`;
           return {
             bandId,
-            label: band?.bandSign || `Band ${bandId}`,
+            label,
           };
         });
         data.bands = bands;

@@ -1,93 +1,66 @@
-import Layout from '@/constants/Layout';
+import { fontSize, spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
-import type { NearestFrequency } from '@/types';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle, StyleProp } from 'react-native';
 import { Button } from './ui/Button';
 import { Card } from './ui/Card';
 
 interface FrequencySuggestionsProps {
-  lower: NearestFrequency[];
-  upper: NearestFrequency[];
+  suggestions: number[];
   onSelect: (frequency: number) => void;
+  style?: StyleProp<ViewStyle>;
 }
 
-export function FrequencySuggestions({ lower, upper, onSelect }: FrequencySuggestionsProps) {
+export function FrequencySuggestions({ suggestions, onSelect, style }: FrequencySuggestionsProps) {
   const { colors } = useTheme();
 
-  if (lower.length === 0 && upper.length === 0) {
+  if (suggestions.length === 0) {
     return null;
   }
 
   return (
-    <Card style={[styles.card, { backgroundColor: colors.warningLight }]}>
+    <Card style={[styles.card, { backgroundColor: colors.warningLight }, style]}>
       <Text style={[styles.title, { color: colors.text }]}>⚠️ Exact frequency not found</Text>
-      <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Nearest frequencies:</Text>
+      <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
+        Try these nearby frequencies:
+      </Text>
 
-      {lower.length > 0 && (
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.textSecondary }]}>
-            Lower ({lower[0].distance} MHz away):
-          </Text>
-          {lower.map((freq, index) => (
-            <Button
-              key={index}
-              variant="secondary"
-              size="sm"
-              onPress={() => onSelect(freq.frequency)}
-              style={styles.button}
-            >
-              {freq.frequency} MHz ({freq.bandSign}
-              {freq.channel})
-            </Button>
-          ))}
-        </View>
-      )}
-
-      {upper.length > 0 && (
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.textSecondary }]}>
-            Higher ({upper[0].distance} MHz away):
-          </Text>
-          {upper.map((freq, index) => (
-            <Button
-              key={index}
-              variant="secondary"
-              size="sm"
-              onPress={() => onSelect(freq.frequency)}
-              style={styles.button}
-            >
-              {freq.frequency} MHz ({freq.bandSign}
-              {freq.channel})
-            </Button>
-          ))}
-        </View>
-      )}
+      <View style={styles.suggestionsContainer}>
+        {suggestions.map((freq) => (
+          <Button
+            key={freq}
+            title={`${freq} MHz`}
+            onPress={() => onSelect(freq)}
+            variant="secondary"
+            size="sm"
+            style={styles.suggestionButton}
+          />
+        ))}
+      </View>
     </Card>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: Layout.spacing.md,
+    marginBottom: spacing.md,
   },
   title: {
-    fontSize: Layout.fontSize.md,
+    fontSize: fontSize.md,
     fontWeight: '600',
-    marginBottom: Layout.spacing.xs,
+    marginBottom: spacing.xs,
   },
   subtitle: {
-    fontSize: Layout.fontSize.sm,
-    marginBottom: Layout.spacing.md,
+    fontSize: fontSize.sm,
+    marginBottom: spacing.md,
   },
-  section: {
-    marginBottom: Layout.spacing.sm,
+  suggestionsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
   },
-  sectionTitle: {
-    fontSize: Layout.fontSize.xs,
-    marginBottom: Layout.spacing.xs,
-  },
-  button: {
-    marginBottom: Layout.spacing.xs,
+  suggestionButton: {
+    flexGrow: 0,
+    flexShrink: 0,
   },
 });

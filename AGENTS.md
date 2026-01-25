@@ -30,6 +30,9 @@ pnpm web             # Start web version
 # Linting
 pnpm lint            # Run ESLint with Expo config
 
+# TypeScript type checking
+pnpm tsc --noEmit    # Check TypeScript types without emitting files
+
 # Database migrations
 npx drizzle-kit generate  # Generate migrations from schema
 npx drizzle-kit migrate   # Apply migrations
@@ -193,8 +196,9 @@ export default Index;
 3. Update types when changing data structures
 4. Generate and test migrations for schema changes
 5. Ensure code passes linting: `pnpm lint`
-6. Test on target platform(s)
-7. Keep changes minimal and focused
+6. Ensure code passes type checking: `pnpm tsc --noEmit`
+7. Test on target platform(s)
+8. Keep changes minimal and focused
 
 ## Resources
 

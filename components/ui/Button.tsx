@@ -1,4 +1,4 @@
-import Layout from '@/constants/Layout';
+import { borderRadius, fontSize, minTouchSize, spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native';
@@ -61,13 +61,13 @@ export function Button({
   const getPadding = () => {
     switch (size) {
       case 'sm':
-        return Layout.spacing.sm;
+        return spacing.sm;
       case 'md':
-        return Layout.spacing.md;
+        return spacing.md;
       case 'lg':
-        return Layout.spacing.lg;
+        return spacing.lg;
       default:
-        return Layout.spacing.md;
+        return spacing.md;
     }
   };
 
@@ -91,7 +91,7 @@ export function Button({
       {loading ? (
         <ActivityIndicator color={getTextColor()} />
       ) : (
-        <Text style={[styles.text, { color: getTextColor(), fontSize: Layout.fontSize[size] }]}>
+        <Text style={[styles.text, { color: getTextColor(), fontSize: fontSize[size] }]}>
           {content}
         </Text>
       )}
@@ -101,10 +101,10 @@ export function Button({
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: Layout.borderRadius.sm,
+    borderRadius: borderRadius.sm,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: Layout.minTouchSize,
+    minHeight: minTouchSize,
   },
   text: {
     fontWeight: '600',

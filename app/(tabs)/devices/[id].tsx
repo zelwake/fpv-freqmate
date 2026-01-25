@@ -1,3 +1,4 @@
+import { BandLabelEditor } from '@/components/BandLabelEditor';
 import { BandSelector } from '@/components/BandSelector';
 import { Button } from '@/components/ui/Button';
 import { Dropdown } from '@/components/ui/Dropdown';
@@ -31,6 +32,7 @@ const EditDeviceScreen = () => {
   const [name, setName] = useState('');
   const [type, setType] = useState<DeviceType>('VTX');
   const [selectedBandIds, setSelectedBandIds] = useState<number[]>([]);
+  const [bandLabels, setBandLabels] = useState<Record<number, string>>({});
   const [isInitialized, setIsInitialized] = useState(false);
 
   const [errors, setErrors] = useState<{
@@ -43,6 +45,12 @@ const EditDeviceScreen = () => {
       setName(device.name);
       setType(device.type);
       setSelectedBandIds(device.bands.map((b) => b.bandId));
+      // Initialize band labels from existing device
+      const labels: Record<number, string> = {};
+      device.bands.forEach((b) => {
+        labels[b.bandId] = b.bandLabel;
+      });
+      setBandLabels(labels);
       setIsInitialized(true);
     }
   }, [device, isInitialized]);
@@ -74,6 +82,7 @@ const EditDeviceScreen = () => {
           name: name.trim(),
           type,
           bandIds: selectedBandIds,
+          bandLabels,
         },
       },
       {
@@ -139,6 +148,15 @@ const EditDeviceScreen = () => {
           }}
           error={errors.bands}
         />
+
+        {selectedBandIds.length > 0 && (
+          <BandLabelEditor
+            label="Band Labels (optional)"
+            selectedBandIds={selectedBandIds}
+            bandLabels={bandLabels}
+            onChange={setBandLabels}
+          />
+        )}
 
         <View style={styles.buttonContainer}>
           <Button onPress={() => router.back()} variant="secondary" style={styles.button}>

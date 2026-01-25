@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useFrequencyLookup } from '@/hooks/useFrequencyLookup';
+
 import { useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 

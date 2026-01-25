@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/expo-sqlite';
-import { SQLiteDatabase } from 'expo-sqlite';
+import { eq } from 'drizzle-orm';
+import { bandFrequencies, frequencyBands } from './schema';
 import { OFFICIAL_BANDS } from './seedData';
-import { frequencyBands, bandFrequencies } from './schema';
 
 /**
  * Naplní databázi oficiálními frekvenčními pásmy při prvním spuštění
@@ -63,9 +63,6 @@ export async function seedOfficialBands(
 export async function getOfficialBandsCount(
   db: ReturnType<typeof drizzle<Record<string, never>>>
 ): Promise<number> {
-  const bands = await db
-    .select()
-    .from(frequencyBands)
-    .where(({ isCustom }) => isCustom === false);
+  const bands = await db.select().from(frequencyBands).where(eq(frequencyBands.isCustom, false));
   return bands.length;
 }

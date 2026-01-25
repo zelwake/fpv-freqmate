@@ -1,6 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useDatabase } from './useDatabase';
 import * as queries from '@/db/queries';
+import { findNearestFrequencies } from '@/utils/frequency';
+import type { NearestFrequency } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LAST_SELECTION_KEY = '@dronefrequency:lastSelection';
@@ -12,6 +14,7 @@ interface LastSelection {
 }
 
 interface LookupResult {
+  bandId: number;
   bandSign: string;
   bandName: string;
   channel: number;
@@ -53,6 +56,9 @@ export function useFrequencyLookup() {
   const handleLookup = useCallback(async () => {
     if (!frequency) return;
 
+    // Store frequency in a const to help TypeScript understand it's not null
+    const searchFrequency = frequency;
+
     setIsLoading(true);
     setVtxResult(null);
     setVrxResult(null);
@@ -63,16 +69,22 @@ export function useFrequencyLookup() {
       const selection: LastSelection = {
         vtxDeviceId,
         vrxDeviceId,
-        frequency: frequency.toString(),
+        frequency: searchFrequency.toString(),
       };
       await AsyncStorage.setItem(LAST_SELECTION_KEY, JSON.stringify(selection));
 
       // Najít frekvenci
-      const result = await queries.findChannelByFrequency(db, vtxDeviceId, vrxDeviceId, frequency);
+      const result = await queries.findChannelByFrequency(
+        db,
+        vtxDeviceId ?? undefined,
+        vrxDeviceId ?? undefined,
+        searchFrequency
+      );
 
       if (result) {
-        if (result.vtx) {
+        if ('vtx' in result && result.vtx) {
           setVtxResult({
+            bandId: result.vtx.bandId,
             bandSign: result.vtx.bandSign,
             bandName: result.vtx.bandName,
             channel: result.vtx.channel,
@@ -81,8 +93,9 @@ export function useFrequencyLookup() {
           });
         }
 
-        if (result.vrx) {
+        if ('vrx' in result && result.vrx) {
           setVrxResult({
+            bandId: result.vrx.bandId,
             bandSign: result.vrx.bandSign,
             bandName: result.vrx.bandName,
             channel: result.vrx.channel,
@@ -93,17 +106,52 @@ export function useFrequencyLookup() {
 
         // Pokud není exact match, najít nejbližší frekvence
         if (!result.exact) {
-          const nearest = await queries.findNearestFrequencies(
-            db,
-            vtxDeviceId,
-            vrxDeviceId,
-            frequency
-          );
+          // Získat všechny dostupné frekvence pro oba devices
+          const allFrequencies: NearestFrequency[] = [];
 
-          if (nearest && !nearest.exact) {
+          if (vtxDeviceId) {
+            const vtxDevice = await queries.getDevice(db, vtxDeviceId);
+            if (vtxDevice) {
+              for (const band of vtxDevice.bands) {
+                for (const channel of band.channels) {
+                  allFrequencies.push({
+                    frequency: channel.frequency,
+                    bandId: band.bandId,
+                    bandSign: band.bandSign,
+                    bandName: band.bandName,
+                    channel: channel.number,
+                    deviceType: 'VTX',
+                    distance: Math.abs(channel.frequency - searchFrequency),
+                  });
+                }
+              }
+            }
+          }
+
+          if (vrxDeviceId) {
+            const vrxDevice = await queries.getDevice(db, vrxDeviceId);
+            if (vrxDevice) {
+              for (const band of vrxDevice.bands) {
+                for (const channel of band.channels) {
+                  allFrequencies.push({
+                    frequency: channel.frequency,
+                    bandId: band.bandId,
+                    bandSign: band.bandSign,
+                    bandName: band.bandName,
+                    channel: channel.number,
+                    deviceType: 'VRX',
+                    distance: Math.abs(channel.frequency - searchFrequency),
+                  });
+                }
+              }
+            }
+          }
+
+          const nearest = findNearestFrequencies(allFrequencies, searchFrequency);
+          if (nearest) {
             const nearestFreqs = [
-              ...nearest.lower.map((f) => f.frequency),
-              ...nearest.upper.map((f) => f.frequency),
+              ...nearest.lower.map((f: NearestFrequency) => f.frequency),
+              ...nearest.upper.map((f: NearestFrequency) => f.frequency),
             ];
             setSuggestions([...new Set(nearestFreqs)].sort((a, b) => a - b).slice(0, 5));
           }
@@ -112,9 +160,9 @@ export function useFrequencyLookup() {
 
       // Přidat do historie
       await queries.addToHistory(db, {
-        vtxDeviceId: vtxDeviceId || undefined,
-        vrxDeviceId: vrxDeviceId || undefined,
-        frequency,
+        vtxDeviceId: vtxDeviceId ?? undefined,
+        vrxDeviceId: vrxDeviceId ?? undefined,
+        frequency: searchFrequency,
       });
     } catch (error) {
       console.error('Lookup error:', error);

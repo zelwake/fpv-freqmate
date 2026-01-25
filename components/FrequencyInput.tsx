@@ -3,8 +3,8 @@ import { Input } from './ui/Input';
 import { isValidFrequency } from '@/utils/frequency';
 
 interface FrequencyInputProps {
-  value: string;
-  onChange: (value: string) => void;
+  value: number | null;
+  onChange: (value: number | null) => void;
   onSubmit?: () => void;
 }
 
@@ -14,16 +14,19 @@ export function FrequencyInput({ value, onChange, onSubmit }: FrequencyInputProp
   const handleChange = (text: string) => {
     // Povolit pouze čísla
     const numericValue = text.replace(/[^0-9]/g, '');
-    onChange(numericValue);
 
-    // Validovat pokud je vyplněno
-    if (numericValue) {
-      const freq = parseInt(numericValue, 10);
-      if (!isValidFrequency(freq)) {
-        setError('Frequency should be between 1000-6000 MHz');
-      } else {
-        setError(undefined);
-      }
+    if (numericValue === '') {
+      onChange(null);
+      setError(undefined);
+      return;
+    }
+
+    const freq = parseInt(numericValue, 10);
+    onChange(freq);
+
+    // Validovat
+    if (!isValidFrequency(freq)) {
+      setError('Frequency should be between 1000-6000 MHz');
     } else {
       setError(undefined);
     }
@@ -32,7 +35,7 @@ export function FrequencyInput({ value, onChange, onSubmit }: FrequencyInputProp
   return (
     <Input
       label="Frequency (MHz)"
-      value={value}
+      value={value?.toString() ?? ''}
       onChangeText={handleChange}
       keyboardType="numeric"
       placeholder="e.g. 5800"

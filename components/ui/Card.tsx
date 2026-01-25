@@ -1,11 +1,11 @@
-import Layout from '@/constants/Layout';
+import { borderRadius, spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
 import React from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleSheet, View, ViewStyle, StyleProp } from 'react-native';
 
 interface CardProps {
   children: React.ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export function Card({ children, style }: CardProps) {
@@ -29,8 +29,8 @@ export function Card({ children, style }: CardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: Layout.borderRadius.md,
-    padding: Layout.spacing.md,
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
     borderWidth: 1,
   },
 });

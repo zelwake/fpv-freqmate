@@ -1,4 +1,4 @@
-import Layout from '@/constants/Layout';
+import { borderRadius, fontSize, minTouchSize, spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
 import React from 'react';
 import {
@@ -42,22 +42,22 @@ export function Input({ label, error, keyboardType = 'default', ...props }: Inpu
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: Layout.spacing.md,
+    marginBottom: spacing.md,
   },
   label: {
-    fontSize: Layout.fontSize.sm,
-    marginBottom: Layout.spacing.xs,
+    fontSize: fontSize.sm,
+    marginBottom: spacing.xs,
     fontWeight: '500',
   },
   input: {
     borderWidth: 1,
-    borderRadius: Layout.borderRadius.sm,
-    padding: Layout.spacing.md,
-    fontSize: Layout.fontSize.md,
-    minHeight: Layout.minTouchSize,
+    borderRadius: borderRadius.sm,
+    padding: spacing.md,
+    fontSize: fontSize.md,
+    minHeight: minTouchSize,
   },
   error: {
-    fontSize: Layout.fontSize.xs,
-    marginTop: Layout.spacing.xs,
+    fontSize: fontSize.xs,
+    marginTop: spacing.xs,
   },
 });

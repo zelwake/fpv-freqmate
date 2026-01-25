@@ -306,47 +306,55 @@ export async function deleteDevice(db: Database, deviceId: number): Promise<void
  */
 export async function findChannelByFrequency(
   db: Database,
-  vtxDeviceId: number,
-  vrxDeviceId: number,
+  vtxDeviceId: number | undefined,
+  vrxDeviceId: number | undefined,
   frequency: number
 ): Promise<
-  { vtx: FrequencyMatch; vrx: FrequencyMatch; exact: true } | NearestFrequenciesResult | null
+  { vtx?: FrequencyMatch; vrx?: FrequencyMatch; exact: true } | NearestFrequenciesResult | null
 > {
-  const vtxDevice = await getDevice(db, vtxDeviceId);
-  const vrxDevice = await getDevice(db, vrxDeviceId);
+  const vtxDevice = vtxDeviceId ? await getDevice(db, vtxDeviceId) : null;
+  const vrxDevice = vrxDeviceId ? await getDevice(db, vrxDeviceId) : null;
 
-  if (!vtxDevice || !vrxDevice) return null;
+  if (!vtxDevice && !vrxDevice) return null;
 
   // Získat všechny možné frekvence pro VTX
-  const vtxOptions = vtxDevice.bands.flatMap((band) =>
-    band.channels.map((ch) => ({
-      bandId: band.bandId,
-      bandSign: band.bandSign,
-      bandName: band.bandName,
-      channel: ch.number,
-      frequency: ch.frequency,
-      deviceType: 'VTX' as const,
-    }))
-  );
+  const vtxOptions = vtxDevice
+    ? vtxDevice.bands.flatMap((band) =>
+        band.channels.map((ch) => ({
+          bandId: band.bandId,
+          bandSign: band.bandSign,
+          bandName: band.bandName,
+          channel: ch.number,
+          frequency: ch.frequency,
+          deviceType: 'VTX' as const,
+        }))
+      )
+    : [];
 
   // Získat všechny možné frekvence pro VRX
-  const vrxOptions = vrxDevice.bands.flatMap((band) =>
-    band.channels.map((ch) => ({
-      bandId: band.bandId,
-      bandSign: band.bandSign,
-      bandName: band.bandName,
-      channel: ch.number,
-      frequency: ch.frequency,
-      deviceType: 'VRX' as const,
-    }))
-  );
+  const vrxOptions = vrxDevice
+    ? vrxDevice.bands.flatMap((band) =>
+        band.channels.map((ch) => ({
+          bandId: band.bandId,
+          bandSign: band.bandSign,
+          bandName: band.bandName,
+          channel: ch.number,
+          frequency: ch.frequency,
+          deviceType: 'VRX' as const,
+        }))
+      )
+    : [];
 
   // Hledat exact match
-  const vtxMatch = findExactMatch(vtxOptions, frequency);
-  const vrxMatch = findExactMatch(vrxOptions, frequency);
+  const vtxMatch = vtxOptions.length > 0 ? findExactMatch(vtxOptions, frequency) : null;
+  const vrxMatch = vrxOptions.length > 0 ? findExactMatch(vrxOptions, frequency) : null;
 
-  if (vtxMatch && vrxMatch) {
-    return { vtx: vtxMatch, vrx: vrxMatch, exact: true };
+  if (vtxMatch || vrxMatch) {
+    return {
+      ...(vtxMatch && { vtx: vtxMatch }),
+      ...(vrxMatch && { vrx: vrxMatch }),
+      exact: true,
+    };
   }
 
   // Pokud není exact match, najít nearest

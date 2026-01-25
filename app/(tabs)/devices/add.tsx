@@ -1,3 +1,4 @@
+import { BandLabelEditor } from '@/components/BandLabelEditor';
 import { BandSelector } from '@/components/BandSelector';
 import { Button } from '@/components/ui/Button';
 import { Dropdown } from '@/components/ui/Dropdown';
@@ -18,6 +19,7 @@ const AddDeviceScreen = () => {
   const [name, setName] = useState('');
   const [type, setType] = useState<DeviceType>(DeviceType.VTX);
   const [selectedBandIds, setSelectedBandIds] = useState<number[]>([]);
+  const [bandLabels, setBandLabels] = useState<Record<number, string>>({});
 
   const [errors, setErrors] = useState<{
     name?: string;
@@ -49,6 +51,7 @@ const AddDeviceScreen = () => {
         name: name.trim(),
         type,
         bandIds: selectedBandIds,
+        bandLabels,
       },
       {
         onSuccess: () => {
@@ -102,6 +105,15 @@ const AddDeviceScreen = () => {
           }}
           error={errors.bands}
         />
+
+        {selectedBandIds.length > 0 && (
+          <BandLabelEditor
+            label="Band Labels (optional)"
+            selectedBandIds={selectedBandIds}
+            bandLabels={bandLabels}
+            onChange={setBandLabels}
+          />
+        )}
 
         <View style={styles.buttonContainer}>
           <Button onPress={() => router.back()} variant="secondary" style={styles.button}>

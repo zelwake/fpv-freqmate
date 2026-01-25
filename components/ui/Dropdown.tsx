@@ -1,4 +1,4 @@
-import Layout from '@/constants/Layout';
+import { borderRadius, fontSize, minTouchSize, spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Picker } from '@react-native-picker/picker';
 import React from 'react';
@@ -66,21 +66,21 @@ export function Dropdown({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: Layout.spacing.md,
+    marginBottom: spacing.md,
   },
   label: {
-    fontSize: Layout.fontSize.sm,
-    marginBottom: Layout.spacing.xs,
+    fontSize: fontSize.sm,
+    marginBottom: spacing.xs,
     fontWeight: '500',
   },
   pickerContainer: {
     borderWidth: 1,
-    borderRadius: Layout.borderRadius.sm,
+    borderRadius: borderRadius.sm,
     overflow: 'hidden',
-    minHeight: Layout.minTouchSize,
+    minHeight: minTouchSize,
     justifyContent: 'center',
   },
   picker: {
-    height: Platform.OS === 'ios' ? 150 : Layout.minTouchSize,
+    height: Platform.OS === 'ios' ? 150 : minTouchSize,
   },
 });

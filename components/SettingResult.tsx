@@ -1,25 +1,28 @@
-import Layout from '@/constants/Layout';
+import { fontSize, spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
 import type { FrequencyMatch } from '@/types';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle, StyleProp } from 'react-native';
 import { Card } from './ui/Card';
 
 interface SettingResultProps {
-  type: 'VTX' | 'VRX';
+  type: 'vtx' | 'vrx';
   result: FrequencyMatch | null;
+  style?: StyleProp<ViewStyle>;
 }
 
-export function SettingResult({ type, result }: SettingResultProps) {
+export function SettingResult({ type, result, style }: SettingResultProps) {
   const { colors } = useTheme();
 
   if (!result) {
     return null;
   }
 
+  const typeLabel = type.toUpperCase();
+
   return (
-    <Card style={[styles.card, { backgroundColor: colors.successLight }]}>
-      <Text style={[styles.title, { color: colors.text }]}>✓ {type} Setting</Text>
+    <Card style={[styles.card, { backgroundColor: colors.successLight }, style]}>
+      <Text style={[styles.title, { color: colors.text }]}>✓ {typeLabel} Setting</Text>
       <View style={styles.row}>
         <Text style={[styles.label, { color: colors.textSecondary }]}>Band:</Text>
         <Text style={[styles.value, { color: colors.text }]}>
@@ -40,23 +43,23 @@ export function SettingResult({ type, result }: SettingResultProps) {
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: Layout.spacing.md,
+    marginBottom: spacing.md,
   },
   title: {
-    fontSize: Layout.fontSize.md,
+    fontSize: fontSize.md,
     fontWeight: '600',
-    marginBottom: Layout.spacing.sm,
+    marginBottom: spacing.sm,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: Layout.spacing.xs,
+    marginBottom: spacing.xs,
   },
   label: {
-    fontSize: Layout.fontSize.sm,
+    fontSize: fontSize.sm,
   },
   value: {
-    fontSize: Layout.fontSize.sm,
+    fontSize: fontSize.sm,
     fontWeight: '500',
   },
 });

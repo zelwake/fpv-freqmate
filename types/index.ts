@@ -85,6 +85,7 @@ export interface CreateDeviceInput {
   name: string;
   type: DeviceType;
   bandIds: number[];
+  bandLabels?: Record<number, string>; // Optional custom labels for bands (bandId -> label)
 }
 
 export interface CreateCustomBandData {
