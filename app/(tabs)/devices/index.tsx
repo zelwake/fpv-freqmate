@@ -2,10 +2,10 @@ import { DeviceCard } from '@/components/DeviceCard';
 import { Button } from '@/components/ui/Button';
 import { spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useDevices, useDeleteDevice } from '@/hooks/useDevices';
-import type { Device } from '@/types';
+import { useDeleteDevice, useDevices } from '@/hooks/useDevices';
+import { DeviceType, type Device } from '@/types';
 import { useRouter } from 'expo-router';
-import { View, Text, StyleSheet, FlatList, Alert, ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, View } from 'react-native';
 
 const DevicesScreen = () => {
   const { colors } = useTheme();
@@ -22,24 +22,20 @@ const DevicesScreen = () => {
   };
 
   const handleDeleteDevice = (device: Device) => {
-    Alert.alert(
-      'Delete Device',
-      `Are you sure you want to delete "${device.name}"?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: () => {
-            deleteDevice.mutate(device.id);
-          },
+    Alert.alert('Delete Device', `Are you sure you want to delete "${device.name}"?`, [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => {
+          deleteDevice.mutate(device.id);
         },
-      ],
-    );
+      },
+    ]);
   };
 
-  const vtxDevices = devices.filter((d: Device) => d.type === 'vtx');
-  const vrxDevices = devices.filter((d: Device) => d.type === 'vrx');
+  const vtxDevices = devices.filter((d: Device) => d.type === DeviceType.VTX);
+  const vrxDevices = devices.filter((d: Device) => d.type === DeviceType.VRX);
 
   if (isLoading) {
     return (
@@ -55,11 +51,9 @@ const DevicesScreen = () => {
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
           <>
-            <Button
-              title="Add New Device"
-              onPress={handleAddDevice}
-              style={styles.addButton}
-            />
+            <Button onPress={handleAddDevice} style={styles.addButton}>
+              Add New Device
+            </Button>
 
             <Text style={[styles.sectionTitle, { color: colors.text }]}>
               VTX Devices ({vtxDevices.length})

@@ -1,8 +1,7 @@
 import { spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useBands } from '@/hooks/useBands';
-import type { FrequencyBand } from '@/types';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface BandSelectorProps {
   selectedBandIds: number[];
@@ -41,7 +40,7 @@ export const BandSelector = ({ selectedBandIds, onChange, label, error }: BandSe
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        {bands.map((band: FrequencyBand) => {
+        {bands.map((band) => {
           const isSelected = selectedBandIds.includes(band.id);
           return (
             <TouchableOpacity
@@ -50,7 +49,7 @@ export const BandSelector = ({ selectedBandIds, onChange, label, error }: BandSe
               style={[
                 styles.bandChip,
                 {
-                  backgroundColor: isSelected ? colors.primary : colors.backgroundSecondary,
+                  backgroundColor: isSelected ? colors.primary : colors.background,
                   borderColor: isSelected ? colors.primary : colors.border,
                 },
               ]}
@@ -63,7 +62,7 @@ export const BandSelector = ({ selectedBandIds, onChange, label, error }: BandSe
                   },
                 ]}
               >
-                {band.label}
+                {band.name}
               </Text>
             </TouchableOpacity>
           );
@@ -76,7 +75,7 @@ export const BandSelector = ({ selectedBandIds, onChange, label, error }: BandSe
           : `${selectedBandIds.length} band${selectedBandIds.length === 1 ? '' : 's'} selected`}
       </Text>
 
-      {error && <Text style={[styles.error, { color: colors.danger }]}>{error}</Text>}
+      {error && <Text style={[styles.error, { color: colors.error }]}>{error}</Text>}
     </View>
   );
 };

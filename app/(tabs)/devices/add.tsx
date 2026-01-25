@@ -5,10 +5,10 @@ import { Input } from '@/components/ui/Input';
 import { spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useCreateDevice } from '@/hooks/useDevices';
-import type { DeviceType } from '@/types';
+import { DeviceType } from '@/types';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { View, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 
 const AddDeviceScreen = () => {
   const { colors } = useTheme();
@@ -16,7 +16,7 @@ const AddDeviceScreen = () => {
   const createDevice = useCreateDevice();
 
   const [name, setName] = useState('');
-  const [type, setType] = useState<DeviceType>('VTX');
+  const [type, setType] = useState<DeviceType>(DeviceType.VTX);
   const [selectedBandIds, setSelectedBandIds] = useState<number[]>([]);
 
   const [errors, setErrors] = useState<{
@@ -58,7 +58,7 @@ const AddDeviceScreen = () => {
         onError: (error) => {
           Alert.alert('Error', error.message || 'Failed to create device');
         },
-      },
+      }
     );
   };
 
@@ -104,18 +104,12 @@ const AddDeviceScreen = () => {
         />
 
         <View style={styles.buttonContainer}>
-          <Button
-            title="Cancel"
-            onPress={() => router.back()}
-            variant="secondary"
-            style={styles.button}
-          />
-          <Button
-            title={createDevice.isPending ? 'Creating...' : 'Create Device'}
-            onPress={handleSave}
-            disabled={createDevice.isPending}
-            style={styles.button}
-          />
+          <Button onPress={() => router.back()} variant="secondary" style={styles.button}>
+            Cancel
+          </Button>
+          <Button onPress={handleSave} disabled={createDevice.isPending} style={styles.button}>
+            {createDevice.isPending ? 'Creating...' : 'Create Device'}
+          </Button>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import Layout from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
-import { Layout } from '@/constants/Layout';
+import { Picker } from '@react-native-picker/picker';
+import React from 'react';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 
 interface DropdownItem {
   label: string;
@@ -12,8 +12,10 @@ interface DropdownItem {
 interface DropdownProps {
   label?: string;
   value: string | number;
-  onValueChange: (value: string | number) => void;
-  items: DropdownItem[];
+  onChange?: (value: string | number) => void;
+  onValueChange?: (value: string | number) => void;
+  items?: DropdownItem[];
+  options?: DropdownItem[];
   placeholder?: string;
   enabled?: boolean;
 }
@@ -21,12 +23,17 @@ interface DropdownProps {
 export function Dropdown({
   label,
   value,
+  onChange,
   onValueChange,
   items,
+  options,
   placeholder = 'Select...',
   enabled = true,
 }: DropdownProps) {
   const { colors } = useTheme();
+
+  const dropdownItems = items || options || [];
+  const handleChange = onChange || onValueChange || (() => {});
 
   return (
     <View style={styles.container}>
@@ -42,13 +49,13 @@ export function Dropdown({
       >
         <Picker
           selectedValue={value}
-          onValueChange={onValueChange}
+          onValueChange={handleChange}
           enabled={enabled}
           style={[styles.picker, { color: colors.text }]}
           dropdownIconColor={colors.textSecondary}
         >
           <Picker.Item label={placeholder} value="" color={colors.textSecondary} />
-          {items.map((item) => (
+          {dropdownItems.map((item) => (
             <Picker.Item key={item.value} label={item.label} value={item.value} />
           ))}
         </Picker>
@@ -70,6 +77,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: Layout.borderRadius.sm,
     overflow: 'hidden',
+    minHeight: Layout.minTouchSize,
+    justifyContent: 'center',
   },
   picker: {
     height: Platform.OS === 'ios' ? 150 : Layout.minTouchSize,

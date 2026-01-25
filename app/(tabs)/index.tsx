@@ -7,7 +7,7 @@ import { spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useFrequencyLookup } from '@/hooks/useFrequencyLookup';
 import { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 const HomeScreen = () => {
   const { colors } = useTheme();
@@ -46,7 +46,8 @@ const HomeScreen = () => {
     Alert.alert('Coming Soon', 'Favorites feature will be implemented in a future update');
   };
 
-  const hasExactMatch = (vtxResult && vtxResult.isExactMatch) || (vrxResult && vrxResult.isExactMatch);
+  const hasExactMatch =
+    (vtxResult && vtxResult.isExactMatch) || (vrxResult && vrxResult.isExactMatch);
   const showSuggestions = hasSearched && !hasExactMatch && suggestions.length > 0;
 
   return (
@@ -61,20 +62,10 @@ const HomeScreen = () => {
 
       <View style={styles.deviceRow}>
         <View style={styles.deviceColumn}>
-          <DeviceSelector
-            label="VTX Device"
-            type="vtx"
-            value={vtxDeviceId}
-            onChange={setVtxDeviceId}
-          />
+          <DeviceSelector type="VTX" value={vtxDeviceId} onChange={setVtxDeviceId} />
         </View>
         <View style={styles.deviceColumn}>
-          <DeviceSelector
-            label="VRX Device"
-            type="vrx"
-            value={vrxDeviceId}
-            onChange={setVrxDeviceId}
-          />
+          <DeviceSelector type="VRX" value={vrxDeviceId} onChange={setVrxDeviceId} />
         </View>
       </View>
 

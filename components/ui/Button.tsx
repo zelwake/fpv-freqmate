@@ -1,11 +1,12 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, ViewStyle } from 'react-native';
+import Layout from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
-import { Layout } from '@/constants/Layout';
+import React from 'react';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native';
 
 interface ButtonProps {
   onPress: () => void;
-  children: React.ReactNode;
+  title?: string;
+  children?: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   disabled?: boolean;
@@ -15,6 +16,7 @@ interface ButtonProps {
 
 export function Button({
   onPress,
+  title,
   children,
   variant = 'primary',
   size = 'md',
@@ -23,6 +25,8 @@ export function Button({
   style,
 }: ButtonProps) {
   const { colors } = useTheme();
+
+  const content = title || children;
 
   const getBackgroundColor = () => {
     if (disabled) return colors.disabled;
@@ -88,7 +92,7 @@ export function Button({
         <ActivityIndicator color={getTextColor()} />
       ) : (
         <Text style={[styles.text, { color: getTextColor(), fontSize: Layout.fontSize[size] }]}>
-          {children}
+          {content}
         </Text>
       )}
     </TouchableOpacity>

@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Card } from './ui/Card';
+import Layout from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
-import { Layout } from '@/constants/Layout';
 import type { FrequencyMatch } from '@/types';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Card } from './ui/Card';
 
 interface SettingResultProps {
   type: 'VTX' | 'VRX';

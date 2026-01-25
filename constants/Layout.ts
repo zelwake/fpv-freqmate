@@ -1,7 +1,7 @@
 /**
  * Layout constants pro spacing, velikosti, atd.
  */
-export const Layout = {
+const Layout = {
   spacing: {
     xs: 4,
     sm: 8,
@@ -31,3 +31,10 @@ export const Layout = {
   },
   minTouchSize: 44, // Minimální velikost pro touch target (iOS HIG)
 };
+
+export default Layout;
+export const spacing = Layout.spacing;
+export const borderRadius = Layout.borderRadius;
+export const fontSize = Layout.fontSize;
+export const iconSize = Layout.iconSize;
+export const minTouchSize = Layout.minTouchSize;

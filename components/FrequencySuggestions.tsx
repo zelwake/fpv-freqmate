@@ -1,10 +1,10 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Card } from './ui/Card';
-import { Button } from './ui/Button';
+import Layout from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
-import { Layout } from '@/constants/Layout';
 import type { NearestFrequency } from '@/types';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button } from './ui/Button';
+import { Card } from './ui/Card';
 
 interface FrequencySuggestionsProps {
   lower: NearestFrequency[];

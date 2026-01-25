@@ -1,15 +1,15 @@
 import { databaseName } from '@/constants/database';
-import { seedOfficialBands } from '@/db/seed';
 import { ThemeProvider } from '@/contexts/ThemeContext';
+import { seedOfficialBands } from '@/db/seed';
+import migrations from '@/drizzle/migrations';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { drizzle } from 'drizzle-orm/expo-sqlite';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { SQLiteProvider } from 'expo-sqlite';
 import { Suspense, useEffect, useState } from 'react';
-import { ActivityIndicator, View, Text } from 'react-native';
-import migrations from '@/drizzle/migrations';
+import { ActivityIndicator, Text, View } from 'react-native';
 
 const expo = SQLite.openDatabaseSync(databaseName, { enableChangeListener: true });
 const db = drizzle(expo);
@@ -72,7 +72,11 @@ const RootLayout = () => {
       <Suspense fallback={<ActivityIndicator size={'large'} />}>
         <QueryClientProvider client={queryClient}>
           <SQLiteProvider databaseName={databaseName}>
-            <Stack />
+            <Stack
+              screenOptions={{
+                headerShown: false,
+              }}
+            />
           </SQLiteProvider>
         </QueryClientProvider>
       </Suspense>

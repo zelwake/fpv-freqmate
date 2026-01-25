@@ -1,6 +1,11 @@
 // Základní typy pro aplikaci
 
-export type DeviceType = 'VTX' | 'VRX';
+export const DeviceType = {
+  VTX: 'VTX',
+  VRX: 'VRX',
+} as const;
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export type DeviceType = keyof typeof DeviceType;
 
 export interface Device {
   id: number;

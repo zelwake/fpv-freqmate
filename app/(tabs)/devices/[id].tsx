@@ -9,14 +9,14 @@ import type { DeviceType } from '@/types';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
-  View,
-  StyleSheet,
-  ScrollView,
+  ActivityIndicator,
   Alert,
   KeyboardAvoidingView,
   Platform,
-  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
   Text,
+  View,
 } from 'react-native';
 
 const EditDeviceScreen = () => {
@@ -84,7 +84,7 @@ const EditDeviceScreen = () => {
         onError: (error) => {
           Alert.alert('Error', error.message || 'Failed to update device');
         },
-      },
+      }
     );
   };
 
@@ -93,7 +93,7 @@ const EditDeviceScreen = () => {
       <View style={[styles.centerContainer, { backgroundColor: colors.background }]}>
         <ActivityIndicator size="large" color={colors.primary} />
         {!device && !isLoadingDevice && (
-          <Text style={[styles.errorText, { color: colors.danger }]}>Device not found</Text>
+          <Text style={[styles.errorText, { color: colors.error }]}>Device not found</Text>
         )}
       </View>
     );
@@ -141,18 +141,12 @@ const EditDeviceScreen = () => {
         />
 
         <View style={styles.buttonContainer}>
-          <Button
-            title="Cancel"
-            onPress={() => router.back()}
-            variant="secondary"
-            style={styles.button}
-          />
-          <Button
-            title={updateDevice.isPending ? 'Saving...' : 'Save Changes'}
-            onPress={handleSave}
-            disabled={updateDevice.isPending}
-            style={styles.button}
-          />
+          <Button onPress={() => router.back()} variant="secondary" style={styles.button}>
+            Cancel
+          </Button>
+          <Button onPress={handleSave} disabled={updateDevice.isPending} style={styles.button}>
+            {updateDevice.isPending ? 'Saving...' : 'Save Changes'}
+          </Button>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

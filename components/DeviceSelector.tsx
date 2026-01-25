@@ -1,10 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Dropdown } from './ui/Dropdown';
 import { useDevices } from '@/hooks/useDevices';
+import { DeviceType } from '@/types/index';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Dropdown } from './ui/Dropdown';
 
 interface DeviceSelectorProps {
-  type: 'VTX' | 'VRX';
+  type: DeviceType;
   value: number | null;
   onChange: (deviceId: number | null) => void;
 }

@@ -1,9 +1,9 @@
 import { Card } from '@/components/ui/Card';
 import { spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
-import type { Device } from '@/types';
+import { DeviceType, type Device } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface DeviceCardProps {
   device: Device;
@@ -14,8 +14,8 @@ interface DeviceCardProps {
 export const DeviceCard = ({ device, onPress, onDelete }: DeviceCardProps) => {
   const { colors } = useTheme();
 
-  const typeLabel = device.type === 'vtx' ? 'VTX' : 'VRX';
-  const typeColor = device.type === 'vtx' ? '#FF6B6B' : '#4ECDC4';
+  const typeLabel = device.type;
+  const typeColor = device.type === DeviceType.VTX ? '#FF6B6B' : '#4ECDC4';
 
   return (
     <TouchableOpacity onPress={onPress} disabled={!onPress} activeOpacity={0.7}>
@@ -37,7 +37,7 @@ export const DeviceCard = ({ device, onPress, onDelete }: DeviceCardProps) => {
               }}
               style={styles.deleteButton}
             >
-              <Ionicons name="trash-outline" size={20} color={colors.danger} />
+              <Ionicons name="trash-outline" size={20} color={colors.error} />
             </TouchableOpacity>
           )}
         </View>
