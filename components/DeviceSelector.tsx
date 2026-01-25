@@ -41,8 +41,6 @@ export function DeviceSelector({ type, value, onChange }: DeviceSelectorProps) {
         <Dropdown
           label={`${type} Device`}
           value=""
-          onValueChange={() => {}}
-          items={[]}
           placeholder={`No ${type} devices - add one first`}
           enabled={false}
         />

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useFrequencyLookup } from '@/hooks/useFrequencyLookup';
+import { DeviceType } from '@/types/index';
 
 import { useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -63,10 +64,10 @@ const HomeScreen = () => {
 
       <View style={styles.deviceRow}>
         <View style={styles.deviceColumn}>
-          <DeviceSelector type="VTX" value={vtxDeviceId} onChange={setVtxDeviceId} />
+          <DeviceSelector type={DeviceType.VTX} value={vtxDeviceId} onChange={setVtxDeviceId} />
         </View>
         <View style={styles.deviceColumn}>
-          <DeviceSelector type="VRX" value={vrxDeviceId} onChange={setVrxDeviceId} />
+          <DeviceSelector type={DeviceType.VRX} value={vrxDeviceId} onChange={setVrxDeviceId} />
         </View>
       </View>
 
@@ -82,11 +83,11 @@ const HomeScreen = () => {
       {hasSearched && (
         <View style={styles.resultsContainer}>
           {vtxDeviceId && vtxResult && (
-            <SettingResult type="vtx" result={vtxResult} style={styles.resultCard} />
+            <SettingResult type={DeviceType.VTX} result={vtxResult} style={styles.resultCard} />
           )}
 
           {vrxDeviceId && vrxResult && (
-            <SettingResult type="vrx" result={vrxResult} style={styles.resultCard} />
+            <SettingResult type={DeviceType.VRX} result={vrxResult} style={styles.resultCard} />
           )}
 
           {!vtxResult && !vrxResult && !isLoading && (

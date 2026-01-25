@@ -1,12 +1,12 @@
 import { fontSize, spacing } from '@/constants/Layout';
 import { useTheme } from '@/contexts/ThemeContext';
-import type { FrequencyMatch } from '@/types';
+import type { DeviceType, FrequencyMatch } from '@/types';
 import React from 'react';
-import { StyleSheet, Text, View, ViewStyle, StyleProp } from 'react-native';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { Card } from './ui/Card';
 
 interface SettingResultProps {
-  type: 'vtx' | 'vrx';
+  type: DeviceType;
   result: FrequencyMatch | null;
   style?: StyleProp<ViewStyle>;
 }
@@ -18,19 +18,23 @@ export function SettingResult({ type, result, style }: SettingResultProps) {
     return null;
   }
 
-  const typeLabel = type.toUpperCase();
-  // Use bandLabel if available, otherwise use bandSign
-  const displayBand = result.bandLabel || result.bandSign;
+  const showBandLabel = result.bandSign !== result.bandLabel;
 
   return (
     <Card style={[styles.card, { backgroundColor: colors.successLight }, style]}>
-      <Text style={[styles.title, { color: colors.text }]}>✓ {typeLabel} Setting</Text>
+      <Text style={[styles.title, { color: colors.text }]}>✓ {type} Setting</Text>
       <View style={styles.row}>
         <Text style={[styles.label, { color: colors.textSecondary }]}>Band:</Text>
         <Text style={[styles.value, { color: colors.text }]}>
-          {displayBand} ({result.bandName})
+          {result.bandSign} ({result.bandName})
         </Text>
       </View>
+      {showBandLabel && (
+        <View style={styles.row}>
+          <Text style={[styles.label, { color: colors.textSecondary }]}>Band Alias:</Text>
+          <Text style={[styles.value, { color: colors.text }]}>{result.bandLabel}</Text>
+        </View>
+      )}
       <View style={styles.row}>
         <Text style={[styles.label, { color: colors.textSecondary }]}>Channel:</Text>
         <Text style={[styles.value, { color: colors.text }]}>{result.channel}</Text>

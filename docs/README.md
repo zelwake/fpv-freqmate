@@ -334,7 +334,7 @@ formatFrequency(frequency: number): string
 ```typescript
 // Device Selector
 <DeviceSelector
-  type="VTX"
+  type={DeviceType.VTX}
   value={deviceId}
   onChange={setDeviceId}
 />
@@ -348,7 +348,7 @@ formatFrequency(frequency: number): string
 
 // Setting Result
 <SettingResult
-  type="VTX"
+  type={DeviceType.VTX}
   band="F"
   bandName="FatShark"
   channel={4}

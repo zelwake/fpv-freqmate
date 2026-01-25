@@ -76,11 +76,11 @@ const styles = StyleSheet.create({
   pickerContainer: {
     borderWidth: 1,
     borderRadius: borderRadius.sm,
-    overflow: 'hidden',
+    // overflow: 'hidden',
     minHeight: minTouchSize,
     justifyContent: 'center',
   },
   picker: {
-    height: Platform.OS === 'ios' ? 150 : minTouchSize,
+    minHeight: Platform.OS === 'ios' ? 150 : minTouchSize,
   },
 });
