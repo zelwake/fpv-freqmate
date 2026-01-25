@@ -131,8 +131,99 @@ MIT
 
 ---
 
-**Status**: 🚧 Work in Progress
+## 🎯 Stav projektu
 
-**Verze**: 1.0.0 (MVP in development)
-
+**Verze**: 1.0.0 (MVP in development)  
 **Poslední update**: 2026-01-25
+
+### ✅ Hotové funkce (MVP Core)
+
+- **Database & Schema**
+  - ✅ SQLite databáze s Drizzle ORM
+  - ✅ Migrace a seed data (10 oficiálních FPV pásem)
+  - ✅ Schema pro zařízení, pásma, frekvence, historii
+
+- **Device Management**
+  - ✅ Přidávání/úprava/mazání VTX/VRX zařízení
+  - ✅ Mapování pásem k zařízením
+  - ✅ Vlastní labely pro pásma (band aliases)
+  - ✅ Zobrazení frekvencí u každého pásma
+
+- **Frequency Lookup**
+  - ✅ Hlavní vyhledávací obrazovka
+  - ✅ Výběr VTX a/nebo VRX zařízení
+  - ✅ Zadání frekvence a nalezení kanálu
+  - ✅ Zobrazení nejbližších frekvencí při nepřesné shodě
+  - ✅ Uložení posledního výběru
+  - ✅ Zobrazení vlastních band labelů ve výsledcích
+  - ✅ Historie vyhledávání (ukládání do DB)
+
+- **UI/UX**
+  - ✅ Light/Dark mode s přepínačem
+  - ✅ Tab navigace (Home, Devices, Favorites, Settings)
+  - ✅ Vertikální BandSelector s checkboxy a inline editorem
+  - ✅ Responzivní komponenty (Input, Button, Dropdown, Card)
+  - ✅ Edge-to-edge podpora (Android)
+
+- **Code Quality**
+  - ✅ TypeScript strict mode
+  - ✅ ESLint + Prettier konfigurace
+  - ✅ Type-safe routing (Expo Router)
+  - ✅ TanStack Query pro state management
+
+### 🚧 Rozpracované funkce
+
+- **Favorites**
+  - ⏳ UI připraveno, funkčnost zatím placeholder
+  - ⏳ Databázová struktura existuje, chybí implementace
+
+- **Settings**
+  - ⏳ Základní obrazovka s theme switcherem
+  - ⏳ Chybí další nastavení (jednotky, jazyk, atd.)
+
+### 📋 TODO - Core Features
+
+- [ ] **Spektrum vizualizace**
+  - [ ] Graf zobrazující všechny frekvence
+  - [ ] Mřížka kanálů s označením obsazených
+  - [ ] Vizuální detekce konfliktů
+
+- [ ] **Hledání volných kanálů**
+  - [ ] Algoritmus pro detekci konfliktů
+  - [ ] Doporučení volných frekvencí
+  - [ ] Zobrazení vzdálenosti mezi kanály
+
+- [ ] **Favorites (dokončení)**
+  - [ ] Implementace CRUD operací
+  - [ ] Rychlý přístup z hlavní obrazovky
+  - [ ] Sdílení/export oblíbených konfigurací
+
+- [ ] **Historie (rozšíření)**
+  - [ ] UI pro zobrazení historie
+  - [ ] Filtrování a vyhledávání
+  - [ ] Možnost obnovit předchozí vyhledání
+
+- [ ] **Custom Bands**
+  - [ ] UI pro vytváření vlastních pásem
+  - [ ] Validace frekvencí (8 kanálů max)
+  - [ ] Import/export vlastních pásem
+
+### 🎨 Nice to Have
+
+- [ ] **Reverse lookup** - Zadání frekvence → okamžité zobrazení kanálu bez výběru zařízení
+- [ ] **Partial device selection** - Indikátor když kanál lze nastavit jen na jednom ze zařízení (VTX nebo VRX)
+- [ ] **Multi-device comparison** - Porovnání frekvencí mezi více zařízeními najednou
+- [ ] **Export/Import** - Backup/restore všech dat (zařízení, oblíbené, vlastní pásma)
+- [ ] **QR Code** - Sdílení konfigurace přes QR kód
+- [ ] **Voice input** - Hlasové zadání frekvence
+- [ ] **Widgets** - Home screen widget pro rychlý přístup
+- [ ] **Apple Watch/WearOS** - Companion aplikace
+- [ ] **Offline maps** - Mapa FPV pilotů poblíž s jejich frekvencemi
+
+### 🐛 Známé problémy
+
+_Zatím žádné reportované_
+
+---
+
+**Status**: 🚧 MVP Core Complete - Moving to Phase 2
