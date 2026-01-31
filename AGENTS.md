@@ -32,6 +32,7 @@ For specific conventions and best practices, see:
 
 - [Development Commands](docs/commands.md) - All pnpm commands, linting, type checking, migrations
 - [Code Style Guidelines](docs/code-style.md) - TypeScript, formatting, naming conventions, component structure
+- [Testing Guidelines](docs/testing.md) - Test structure, queries, mocking patterns, best practices
 - [Database Guidelines](docs/database.md) - Schema management, migrations, Drizzle patterns
 - [State Management](docs/state-management.md) - TanStack Query, React hooks, Context API
 - [React Native Best Practices](docs/react-native.md) - Expo APIs, performance, platform-specific patterns
