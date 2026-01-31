@@ -23,7 +23,7 @@ const DevicesScreen = () => {
   if (isLoading) {
     return (
       <View style={[styles.centerContainer, { backgroundColor: colors.background }]}>
-        <ActivityIndicator size="large" color={colors.primary} />
+        <ActivityIndicator size="large" color={colors.primary} accessibilityHint="loading" />
       </View>
     );
   }

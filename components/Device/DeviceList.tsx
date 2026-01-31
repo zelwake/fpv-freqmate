@@ -52,7 +52,7 @@ const DeviceList: FC<DeviceListProps> = ({ data, variant }) => {
             <Text style={[styles.sectionTitle, { color: colors.text }]}>
               {variant} Devices ({data?.length})
             </Text>
-            {data?.length && data.length > 0 && (
+            {data && data.length > 0 && (
               <Pressable onPress={() => setMode(mode === 'edit' ? 'delete' : 'edit')}>
                 {mode === 'edit' && (
                   <Ionicons name="trash-outline" size={24} color={colors.error} />
@@ -76,7 +76,7 @@ const DeviceList: FC<DeviceListProps> = ({ data, variant }) => {
         ListEmptyComponent={
           <View style={[styles.emptyCard, { backgroundColor: colors.card }]}>
             <Text style={[styles.emptyText, { color: colors.textSecondary }]}>
-              No VRX devices yet
+              No {variant} devices yet
             </Text>
           </View>
         }

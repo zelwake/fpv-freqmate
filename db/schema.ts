@@ -1,5 +1,5 @@
-import { integer, sqliteTable, text, primaryKey } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
+import { integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 // Frekvenční pásma (A, B, E, F, R, D, U, O, L, H)
 export const frequencyBands = sqliteTable('frequency_band', {
@@ -20,9 +20,7 @@ export const bandFrequencies = sqliteTable(
     channelNumber: integer('channel_number').notNull(),
     frequency: integer('frequency').notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.bandId, table.channelNumber] }),
-  })
+  (table) => [primaryKey({ columns: [table.bandId, table.channelNumber] })]
 );
 
 // Zařízení (VTX/VRX) - vždy uživatelská
@@ -47,9 +45,7 @@ export const deviceBands = sqliteTable(
       .references(() => frequencyBands.id, { onDelete: 'cascade' }),
     bandLabel: text('band_label').notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.deviceId, table.bandId] }),
-  })
+  (table) => [primaryKey({ columns: [table.deviceId, table.bandId] })]
 );
 
 // Oblíbené konfigurace

@@ -25,6 +25,7 @@ export const DeviceCard = ({ device, onEdit, onDelete }: DeviceCardProps) => {
       onPress={mode === 'edit' ? onEdit : onDelete}
       disabled={!onEdit}
       activeOpacity={0.7}
+      accessibilityHint={mode === 'edit' ? 'editing' : 'deleting'}
     >
       <Card
         style={[
@@ -34,7 +35,10 @@ export const DeviceCard = ({ device, onEdit, onDelete }: DeviceCardProps) => {
       >
         <View style={styles.header}>
           <View style={styles.titleRow}>
-            <View style={[styles.typeBadge, { backgroundColor: typeColor }]}>
+            <View
+              style={[styles.typeBadge, { backgroundColor: typeColor }]}
+              accessibilityLabel="device-card-badge"
+            >
               <Text style={styles.typeBadgeText}>{typeLabel}</Text>
             </View>
             <Text style={[styles.name, { color: colors.text }]} numberOfLines={1}>

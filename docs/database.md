@@ -10,8 +10,7 @@
 
 1. Make changes to `db/schema.ts`
 2. Generate migration: `npx drizzle-kit generate`
-3. Apply migration: `npx drizzle-kit migrate`
-4. **Always generate migrations after schema changes**
+3. **Always generate migrations after schema changes**
 
 ## Query Patterns
 
