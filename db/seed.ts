@@ -1,5 +1,6 @@
-import { drizzle } from 'drizzle-orm/expo-sqlite';
+import { logger } from '@/utils/logger';
 import { eq } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/expo-sqlite';
 import { bandFrequencies, frequencyBands } from './schema';
 import { OFFICIAL_BANDS } from './seedData';
 
@@ -16,11 +17,11 @@ export async function seedOfficialBands(
     const existingBands = await db.select().from(frequencyBands).limit(1);
 
     if (existingBands.length > 0) {
-      console.log('[Seed] Official bands already exist, skipping seed');
+      logger.debug('[Seed] Official bands already exist, skipping seed');
       return false;
     }
 
-    console.log('[Seed] Seeding official bands...');
+    logger.debug('[Seed] Seeding official bands...');
 
     // Naplnit pásma a jejich frekvence
     for (const band of OFFICIAL_BANDS) {
@@ -44,15 +45,15 @@ export async function seedOfficialBands(
 
       await db.insert(bandFrequencies).values(frequencyValues);
 
-      console.log(
+      logger.debug(
         `[Seed] Added band ${band.sign} (${band.name}) with ${band.frequencies.length} channels`
       );
     }
 
-    console.log('[Seed] Official bands seeded successfully!');
+    logger.debug('[Seed] Official bands seeded successfully!');
     return true;
   } catch (error) {
-    console.error('[Seed] Error seeding official bands:', error);
+    logger.error('[Seed] Error seeding official bands:', { error });
     throw error;
   }
 }

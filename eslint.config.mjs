@@ -9,6 +9,14 @@ export default defineConfig([
   {
     ignores: ['dist/*'],
   },
+  {
+    rules: {
+      'prefer-template': 'error',
+    },
+  },
   ...pluginQuery.configs['flat/recommended'],
-  ...RNTLConfig.configs['flat/react'],
+  {
+    ...RNTLConfig.configs['flat/react'],
+    files: ['*test.tsx', '*test.ts'],
+  },
 ]);

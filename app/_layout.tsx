@@ -2,6 +2,7 @@ import { databaseName } from '@/constants/database';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { seedOfficialBands } from '@/db/seed';
 import migrations from '@/drizzle/migrations';
+import { logger } from '@/utils/logger';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { drizzle } from 'drizzle-orm/expo-sqlite';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
@@ -16,6 +17,8 @@ const db = drizzle(expo);
 
 const queryClient = new QueryClient();
 
+logger.info('App has started');
+
 const RootLayout = () => {
   const { success, error } = useMigrations(db, migrations);
   const [isSeeding, setIsSeeding] = useState(false);
@@ -27,12 +30,12 @@ const RootLayout = () => {
       seedOfficialBands(db)
         .then((wasSeeded) => {
           if (wasSeeded) {
-            console.log('[App] Database seeded successfully');
+            logger.debug('[App] Database seeded successfully');
           }
           setIsSeeding(false);
         })
         .catch((err) => {
-          console.error('[App] Seed error:', err);
+          logger.error('[App] Seed error:', err);
           setSeedError(err.message);
           setIsSeeding(false);
         });
